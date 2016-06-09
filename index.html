@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Timer</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/react/0.14.0/react.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/react/0.14.0/react-dom.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-core/5.6.15/browser.js"></script>
+</head>
+<body>
+    <div id="content"></div>
+
+    <script type="text/babel">
+        var Timer = React.createClass({
+            getInitialState: function() {
+                return {
+                    seconds: 0,
+                    isPaused: true
+                }
+            },
+            tick: function() {
+                this.setState({seconds: this.state.seconds + 1});
+            },
+            stopTimer: function() {
+                clearInterval(this.timer);
+                this.setState({isPaused: true});
+                this.setState({seconds: 0});
+            },
+            playOrPauseTimer: function() {
+                if (this.state.isPaused) {
+                    this.timer = setInterval(this.tick, 1000);
+                    this.setState({isPaused: false});
+                } else {
+                    clearInterval(this.timer);
+                    this.setState({isPaused: true});
+                }
+            },
+            render: function() {
+                return (
+                    <div>
+                        <h1>
+                            {this.state.seconds} seconds left
+                        </h1>
+                        <br />
+                        <button onClick={this.playOrPauseTimer}>
+                            {this.state.isPaused ? 'Play' : 'Pause'}
+                        </button>
+                        <button onClick={this.stopTimer}>Stop</button>
+                    </div>
+                );
+            }
+        });
+
+        ReactDOM.render(
+            <Timer />,
+            document.getElementById('content')
+        );
+    </script>
+
+</body>
+</html>
